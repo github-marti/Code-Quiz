@@ -31,6 +31,14 @@ End game function
     Display the score
     Input for name
 
+Store data function
+    take input from initials input and store it in local storage
+    bring user to high score page (no nav bar)
+
+Retrieve data function 
+    retrieve input from local storage and display it as a list
+
+
 Event listener for Input
     when input is submitted, name and score get logged to local memory
 

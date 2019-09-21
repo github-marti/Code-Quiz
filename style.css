@@ -18,7 +18,7 @@ p {
     margin: auto;
 }
 
-.question-page {
+.quiz-page {
     text-align: left;
     overflow: auto;
     max-width: 600px;
@@ -47,4 +47,12 @@ p {
     margin: 20px 0;
     padding-top: 10px;
     border-top: 1px solid gray;
+}
+
+#input-field {
+    display: none;
+}
+
+#initials {
+    margin: 0 0 0 15px;
 }

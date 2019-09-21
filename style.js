@@ -6,6 +6,8 @@ let text = document.getElementById('text');
 let quizAnswers = document.getElementById('quiz-answers');
 let answerButtons = document.getElementsByClassName('answer-button');
 let answerMessage = document.getElementById('answer-message');
+let inputField = document.getElementById('input-field');
+
 
 //sets variables
 let timerSecs = 75;
@@ -34,7 +36,7 @@ function nextQuestion() {
     console.log("Current score: " + score);
 
     // changes appearance of page
-    container.className = "question-page mt-5"
+    container.className = "quiz-page mt-5"
     title.textContent = 'Question ' + (currentQuestion + 1);
     title.setAttribute('class', 'h2')
     text.textContent = questions[currentQuestion].title;
@@ -77,8 +79,14 @@ function checkAnswer(event) {
             answerMessage.style.display = "none";
         }, 800);
 
-        // go to next question
-        nextQuestion();
+        // end game if current question is 5
+        if (currentQuestion === 5) {
+            endGame();
+
+        // else go to next question
+        } else {
+            nextQuestion();
+        };
 
     // displays incorrect and decreases total time and increases currentQuestion
     } else {
@@ -93,9 +101,31 @@ function checkAnswer(event) {
             answerMessage.style.display = "none";
         }, 800);
 
-        // go to next question
-        nextQuestion();
+        // end game if current question is 5
+        if (currentQuestion === 5) {
+            endGame();
+
+        // else go to next question
+        } else {
+            nextQuestion();
+        };
     }
+}
+
+// triggers end game page
+function endGame() {
+    // changes page display
+    quizAnswers.style.display = "none";
+    container.className = "quiz-page mt-5"
+    title.textContent = 'All done!';
+    title.setAttribute('class', 'h2');
+    text.removeAttribute("class");
+    text.textContent = "Your final score is " + score + ". Enter your initials to see the high scores!";
+    inputField.style.display = "block";
+
+    // when submit button is clicked, initals are stored
+    // and user is brought to high score page
+    inputField.addEventListener('click', storeHighScore);
 }
 
 // counts down from starting timerSecs 
@@ -105,15 +135,17 @@ function countdown() {
         timerSecs --;
         timerDisplay.textContent = timerSecs;
 
+        // alert that user has run out of tiem and end game
+        // if timer runs out
         if (timerSecs === 0) {
             clearInterval(timerInterval);
             alert("You've run out of time!");
             endGame();
         }
 
-        if (questionsAnswered === 4) {
+        // clear timer if current question hits 5
+        if (currentQuestion === 5) {
             clearInterval(timerInterval);
-            endGame();
         }
     }, 1000)
 }
