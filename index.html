@@ -10,7 +10,7 @@
 </head>
 <body>
     <nav class="navbar navbar-light bg-light">
-        <a href="#" class="navbar-text float-left">High Scores</a>
+        <a href="#" id="highscores-link" class="navbar-text float-left">High Scores</a>
         <span class="navbar-text float-right">Time: <span id="timer">75</span></span>
     </nav>
     <div id="container" class="start-page mt-5">
@@ -21,15 +21,15 @@
         </p>
         <button aria-label="start-game" id="start-button" class="button">Start Game</button>
         <div id="quiz-answers">
-            <button id="button-1" class="answer-button"></button>
-            <button id="button-2" class="answer-button"></button>
-            <button id="button-3" class="answer-button"></button>
-            <button id="button-4" class="answer-button"></button>
+            <button class="answer-button"></button>
+            <button class="answer-button"></button>
+            <button class="answer-button"></button>
+            <button class="answer-button"></button>
         </div>
         <div id="input-field">
             <label for="initials">Enter initials:</label>
             <input type="text" name="initials" id="initials" placeholder="ex. ABC" />
-            <input type="submit" value="Submit" />
+            <input type="button" id ="submit-button" value="Submit" />
         </div>
         <div id="answer-message"></div>
     </div>

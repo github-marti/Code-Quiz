@@ -1,3 +1,5 @@
+let navBar = document.querySelector('nav');
+let highscoresLink = document.getElementById('highscores-link');
 let container = document.getElementById('container');
 let timerDisplay = document.getElementById('timer');
 let startButton = document.getElementById('start-button');
@@ -7,6 +9,8 @@ let quizAnswers = document.getElementById('quiz-answers');
 let answerButtons = document.getElementsByClassName('answer-button');
 let answerMessage = document.getElementById('answer-message');
 let inputField = document.getElementById('input-field');
+let initials = document.getElementById('initials');
+let submitButton = document.getElementById('submit-button');
 
 
 //sets variables
@@ -14,6 +18,7 @@ let timerSecs = 75;
 let rightAnswers = 0;
 let currentQuestion = 0
 let score = 0;
+let scoreArray = [];
 
 // confirming that questions are being referenced
 console.log(questions);
@@ -54,7 +59,9 @@ function nextQuestion() {
     answerButtons[3].textContent = questions[currentQuestion].choices[3];
 
     // clicking one of the buttons calls the checkAnswer function
-    quizAnswers.addEventListener('click', checkAnswer);
+    for (i = 0; i < answerButtons.length; i++) {
+        answerButtons[i].addEventListener('click', checkAnswer);
+    }
     
     // checking that currentQuestion has increased one after pressing answer button
     console.log(currentQuestion);
@@ -125,7 +132,84 @@ function endGame() {
 
     // when submit button is clicked, initals are stored
     // and user is brought to high score page
-    inputField.addEventListener('click', storeHighScore);
+    submitButton.addEventListener('click', storeHighScore);
+}
+
+// stores input from initials input and puts it in local storage
+// then takes user to high score page to see high scores
+function storeHighScore(event) {
+    event.preventDefault();
+
+    // if no input is detected nothing happens
+    if (initials.value.length === 0) {
+        return
+    
+    // otherwise initial/score combo is pushed to score array
+    } else {
+        newScore = {
+            userName: initials.value.trim(),
+            userScore: score
+        };
+        scoreArray.push(newScore);
+
+        // array is made into a string and pushed to local storage
+        localStorage.setItem("score", JSON.stringify(scoreArray));
+    
+        // user is taken to highscore page
+        seeHighScores();
+    }
+}
+
+function loadHighScore() {
+    storedScores = JSON.parse(localStorage.getItem("score"));
+
+    if (storedScores !== null) {
+        scoreArray = storedScores;
+    }
+    console.log(scoreArray);
+    return scoreArray;
+}
+
+// shows highscofres
+function seeHighScores() {
+
+    // creates new list and button elements and appends them to container
+    let ul = document.createElement('ul');
+    let returnButton = document.createElement('button');
+    let clearButton = document.createElement('button');
+    returnButton.textContent = "Go Back";
+    clearButton.textContent = "Clear Highscores";
+    container.appendChild(ul);
+    container.appendChild(returnButton);
+    container.appendChild(clearButton);
+
+    // removes navbar and other elements
+    startButton.style.display = 'none';
+    navBar.style.visibility = 'hidden';
+    title.textContent = "High Scores";
+    text.textContent = '';
+    quizAnswers.style.display = 'none';
+    inputField.style.display = 'none';
+
+    // render a new li for each highscore
+    for (i = 0; i < scoreArray.length; i++) {
+        let score = scoreArray[i].userName + " : " + scoreArray[i].userScore;
+
+        li = document.createElement('li');
+        li.textContent = score;
+        ul.appendChild(li);
+    }
+
+    // adds event listener for return button to bring person back to index.html
+    returnButton.addEventListener('click', function() {
+        location.href = "index.html"
+    });
+
+    // adds event listener for clear button that clears local storage
+    clearButton.addEventListener('click', function() {
+        localStorage.clear();
+        ul.innerHTML = '';
+    });
 }
 
 // counts down from starting timerSecs 
@@ -150,6 +234,11 @@ function countdown() {
     }, 1000)
 }
 
+loadHighScore();
+
 // event listener for when you click the start button
 startButton.addEventListener('click', startQuiz);
+
+// event listener for when you click highscores link in navbar
+highscoresLink.addEventListener('click', seeHighScores);
 

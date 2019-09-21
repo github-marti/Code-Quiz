@@ -32,7 +32,10 @@ End game function
     Input for name
 
 Store data function
-    take input from initials input and store it in local storage
+    if input is null
+        return
+    else
+        take input from initials input and store it in local storage
     bring user to high score page (no nav bar)
 
 Retrieve data function 
