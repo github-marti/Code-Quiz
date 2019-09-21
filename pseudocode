@@ -1,0 +1,39 @@
+Code Quiz Pseudocode
+
+
+
+Start quiz function
+    when the start button is pressed, the timer in the upper corner starts counting down
+    next question is displayed
+
+Next question function
+    changes page layout
+    shows question based on which question the user is on
+    displays four answer buttons that show answers to the correct question
+    (as laid out in the question array)
+    calls answer function when answer button is pushed
+
+Answer function
+    if answer is correct display correct for three seconds, next question
+    else if answer is incorrect display incorrect for three seconds
+        remove 5 seconds from timer
+        next question
+
+Countdown function
+    if the user answers array.length number of times
+        call end game function
+        clear interval
+    if the time runs out
+        display box that says "Uh oh, you ran out of time!"
+        call end game function
+
+End game function
+    Display the score
+    Input for name
+
+Event listener for Input
+    when input is submitted, name and score get logged to local memory
+
+Event listener for highscores
+    when highscore button is pressed, box pops up showing high scores from local memory
+    

@@ -1,0 +1,50 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: auto;
+}
+
+p {
+    margin: 15px 0;
+}
+
+.start-page {
+    text-align: center;
+    overflow: auto;
+    max-width: 600px;
+    display: block;
+    margin: auto;
+}
+
+.question-page {
+    text-align: left;
+    overflow: auto;
+    max-width: 600px;
+    display: block;
+    margin: auto;
+}
+
+#title {
+    margin: 15px 0;
+}
+
+#quiz-answers {
+    display: none;
+}
+
+.answer-button {
+    display: block;
+    margin: 15px 0;
+}
+
+.answer-message {
+    display: none;
+    width: 100%;
+    font-style: italic;
+    color: gray;
+    margin: 20px 0;
+    padding-top: 10px;
+    border-top: 1px solid gray;
+}
