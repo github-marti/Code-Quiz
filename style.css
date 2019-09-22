@@ -10,25 +10,47 @@ p {
     margin: 15px 0;
 }
 
-.start-page {
-    text-align: center;
+button {
+    background: #ba251a;
+    color: white;
+    border: 1px solid #630c06;
+    border-radius: 5px;
+    padding: 2px 10px;
+    margin-right: 10px;
+}
+
+button:hover {
+    background: #630c06;
+}
+
+#container {
     overflow: auto;
-    max-width: 600px;
+    max-width: 80%;
     display: block;
     margin: auto;
 }
 
-.quiz-page {
+.start-page {
+    text-align: center;
+}
+
+.quiz-page,
+.results-page,
+.score-page {
     text-align: left;
-    overflow: auto;
-    max-width: 600px;
-    display: block;
-    margin: auto;
 }
 
 ul {
     margin-left: 0;
     padding-left: 0;
+}
+
+li {
+    background: #dddddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+    font-weight: bold;
 }
 
 #title {
@@ -61,4 +83,17 @@ ul {
 #initials {
     margin: 0 0 0 15px;
 }
+
+body:not(.user-is-tabbing) button:focus,
+body:not(.user-is-tabbing) input:focus,
+body:not(.user-is-tabbing) select:focus,
+body:not(.user-is-tabbing) textarea:focus {
+  outline: none;
+}
+
+@media screen and (min-width: 1024px) {
+    #container {
+        max-width: 800px;
+    }
+  }
 

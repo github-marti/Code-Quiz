@@ -14,22 +14,27 @@ let submitButton = document.getElementById('submit-button');
 
 
 //sets variables
-let timerSecs = 75;
+let timerSecs = 0;
 let rightAnswers = 0;
 let currentQuestion = 0
 let score = 0;
 let scoreArray = [];
+let timerInterval = false;
 
 // confirming that questions are being referenced
 console.log(questions);
 
 // starts game
 function startQuiz() {
-    // starts question page
-    nextQuestion();
+    // starts timer
+    timerSecs = 75;
+    timerDisplay.textContent = timerSecs;
 
     // start countdown
     countdown();
+
+    // starts question page
+    nextQuestion();
 
     // make the start button disappear
     startButton.style.display = 'none';
@@ -37,11 +42,12 @@ function startQuiz() {
 
 // changes display to next question
 function nextQuestion() {
+
     // checks what current score is
     console.log("Current score: " + score);
 
     // changes appearance of page
-    container.className = "quiz-page mt-5"
+    container.className = "results-page mt-5"
     title.textContent = 'Question ' + (currentQuestion + 1);
     title.setAttribute('class', 'h2')
     text.textContent = questions[currentQuestion].title;
@@ -97,38 +103,43 @@ function checkAnswer(event) {
 
     // displays incorrect and decreases total time and increases currentQuestion
     } else {
+        currentQuestion ++;
         answerMessage.style.display = "block";
         answerMessage.textContent = "Incorrect!";
         answerMessage.className = "answer-message";
-        currentQuestion ++;
-        timerSecs -= 10;
 
-        // message disappears after set time
         setTimeout(function() {
             answerMessage.style.display = "none";
         }, 800);
 
-        // end game if current question is 5
-        if (currentQuestion === 5) {
+        if (timerSecs < 10) {
+            timerSecs -= 10;
             endGame();
-
-        // else go to next question
+        } else if (currentQuestion === 5) {
+            endGame();
         } else {
+            timerSecs -= 10;
             nextQuestion();
         };
     }
-}
+};
 
 // triggers end game page
 function endGame() {
     // changes page display
     quizAnswers.style.display = "none";
     container.className = "quiz-page mt-5"
-    title.textContent = 'All done!';
     title.setAttribute('class', 'h2');
     text.removeAttribute("class");
     text.textContent = "Your final score is " + score + ". Enter your initials to see the high scores!";
     inputField.style.display = "block";
+
+    // changes title display depending on whether user ran out of time
+    if (timerSecs <= 0) {
+        title.textContent = 'You ran out of time!';
+    } else {
+        title.textContent = 'All done!';
+    }
 
     // when submit button is clicked, initals are stored
     // and user is brought to high score page
@@ -160,25 +171,35 @@ function storeHighScore(event) {
     }
 }
 
+// initially load scores from local storage into scores array
 function loadHighScore() {
+    // parses string value from local storage into new array
     storedScores = JSON.parse(localStorage.getItem("score"));
 
+    // if new array isn't empty (no previously saved scores)
+    // then save into scoreArray
     if (storedScores !== null) {
         scoreArray = storedScores;
+
+        // return the new scoreArray value
+        return scoreArray;
     }
-    console.log(scoreArray);
-    return scoreArray;
 }
 
-// shows highscofres
+// shows highs scores
 function seeHighScores() {
+    // clears timerInterval if countdown has been initiated
+    if (timerInterval) {
+        clearInterval(timerInterval);
+    };
 
     // creates new list and button elements and appends them to container
+    container.className = 'score-page mt-5';
     let ul = document.createElement('ul');
     let returnButton = document.createElement('button');
     let clearButton = document.createElement('button');
     returnButton.textContent = "Go Back";
-    clearButton.textContent = "Clear Highscores";
+    clearButton.textContent = "Clear High Scores";
     container.appendChild(ul);
     container.appendChild(returnButton);
     container.appendChild(clearButton);
@@ -210,7 +231,7 @@ function seeHighScores() {
         localStorage.clear();
         ul.innerHTML = '';
     });
-}
+};
 
 // counts down from starting timerSecs 
 function countdown() {
@@ -219,21 +240,31 @@ function countdown() {
         timerSecs --;
         timerDisplay.textContent = timerSecs;
 
-        // alert that user has run out of tiem and end game
+        // alert that user has run out of time and end game
         // if timer runs out
-        if (timerSecs === 0) {
-            clearInterval(timerInterval);
-            alert("You've run out of time!");
+        if (timerSecs < 1) {
+            timerDisplay.textContent = 0;
             endGame();
-        }
+            clearInterval(timerInterval);
+        };
 
-        // clear timer if current question hits 5
+        // clear timer if current question hits 5 (game is over)
         if (currentQuestion === 5) {
+            timerDisplay.textContent = timerSecs;
             clearInterval(timerInterval);
         }
     }, 1000)
 }
 
+// code to prevent blue focus outline from showing unless user is a keyboard user
+function handleFirstTab(e) {
+    if (e.keyCode === 9) { // the "I am a keyboard user" key
+        document.body.classList.add('user-is-tabbing');
+        window.removeEventListener('keydown', handleFirstTab);
+    }
+}
+
+// loads parsed local storage data into score array
 loadHighScore();
 
 // event listener for when you click the start button
@@ -241,4 +272,7 @@ startButton.addEventListener('click', startQuiz);
 
 // event listener for when you click highscores link in navbar
 highscoresLink.addEventListener('click', seeHighScores);
+
+// checks if user is keyboard user
+window.addEventListener('keydown', handleFirstTab);
 
