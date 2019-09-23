@@ -12,10 +12,8 @@ let inputField = document.getElementById('input-field');
 let initials = document.getElementById('initials');
 let submitButton = document.getElementById('submit-button');
 
-
 //sets variables
 let timerSecs = 0;
-let rightAnswers = 0;
 let currentQuestion = 0
 let score = 0;
 let scoreArray = [];
@@ -52,6 +50,7 @@ function nextQuestion() {
     title.setAttribute('class', 'h2')
     text.textContent = questions[currentQuestion].title;
     text.className = "h4";
+    text.setAttribute('style', 'border-top: 1px double #ba251a; padding-top: 20px;')
 
     // displays the answer buttons
     quizAnswers.style.display = 'block';
@@ -79,7 +78,7 @@ function checkAnswer(event) {
     console.log("User chose: " + event.target.textContent);
     console.log("Correct answer: " + questions[currentQuestion].answer);
 
-    // displays correct and increases score and currentQuestion variables
+    // if selection is correct displays correct and increases score and currentQuestion variables
     if (event.target.textContent === questions[currentQuestion].answer) {
         answerMessage.style.display = "block";
         answerMessage.textContent = "Correct!";
@@ -101,22 +100,28 @@ function checkAnswer(event) {
             nextQuestion();
         };
 
-    // displays incorrect and decreases total time and increases currentQuestion
+    // if selection is incorrect displays incorrect and decreases total time and increases currentQuestion
     } else {
         currentQuestion ++;
         answerMessage.style.display = "block";
         answerMessage.textContent = "Incorrect!";
         answerMessage.className = "answer-message";
 
+        // message disappears after set time
         setTimeout(function() {
             answerMessage.style.display = "none";
         }, 800);
 
+        // ends game if timer is less than 10 seconds, as 10 seconds will be removed
         if (timerSecs < 10) {
             timerSecs -= 10;
             endGame();
+
+        // ends game if user is on the last question
         } else if (currentQuestion === 5) {
             endGame();
+
+        // else subtracts time from timer and moves onto next question
         } else {
             timerSecs -= 10;
             nextQuestion();
@@ -130,11 +135,12 @@ function endGame() {
     quizAnswers.style.display = "none";
     container.className = "quiz-page mt-5"
     title.setAttribute('class', 'h2');
+    text.setAttribute('style', 'border-top: 0');
     text.removeAttribute("class");
     text.textContent = "Your final score is " + score + ". Enter your initials to see the high scores!";
     inputField.style.display = "block";
 
-    // changes title display depending on whether user ran out of time
+    // changes title display depending on whether user ran out of time or not
     if (timerSecs <= 0) {
         title.textContent = 'You ran out of time!';
     } else {
@@ -163,6 +169,9 @@ function storeHighScore(event) {
         };
         scoreArray.push(newScore);
 
+        // sorts scores so that the highest number is pushed to the front of array
+        scoreArray.sort((a, b) => b.userScore - a.userScore);
+        
         // array is made into a string and pushed to local storage
         localStorage.setItem("score", JSON.stringify(scoreArray));
     
@@ -176,8 +185,7 @@ function loadHighScore() {
     // parses string value from local storage into new array
     storedScores = JSON.parse(localStorage.getItem("score"));
 
-    // if new array isn't empty (no previously saved scores)
-    // then save into scoreArray
+    // if new array isn't empty (no previously saved scores) then save into scoreArray
     if (storedScores !== null) {
         scoreArray = storedScores;
 
@@ -209,6 +217,7 @@ function seeHighScores() {
     navBar.style.visibility = 'hidden';
     title.textContent = "High Scores";
     text.textContent = '';
+    text.setAttribute('style', 'border-top: 0');
     quizAnswers.style.display = 'none';
     inputField.style.display = 'none';
 
@@ -226,7 +235,7 @@ function seeHighScores() {
         location.href = "index.html"
     });
 
-    // adds event listener for clear button that clears local storage
+    // adds event listener for clear button for clearing local storage and deletes li elements
     clearButton.addEventListener('click', function() {
         localStorage.clear();
         ul.innerHTML = '';
@@ -240,8 +249,7 @@ function countdown() {
         timerSecs --;
         timerDisplay.textContent = timerSecs;
 
-        // alert that user has run out of time and end game
-        // if timer runs out
+        // alert that user has run out of time and end game if timer runs out
         if (timerSecs < 1) {
             timerDisplay.textContent = 0;
             endGame();
@@ -264,6 +272,9 @@ function handleFirstTab(e) {
     }
 }
 
+// checks if user is keyboard user
+window.addEventListener('keydown', handleFirstTab);
+
 // loads parsed local storage data into score array
 loadHighScore();
 
@@ -273,6 +284,4 @@ startButton.addEventListener('click', startQuiz);
 // event listener for when you click highscores link in navbar
 highscoresLink.addEventListener('click', seeHighScores);
 
-// checks if user is keyboard user
-window.addEventListener('keydown', handleFirstTab);
 

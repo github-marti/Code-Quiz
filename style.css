@@ -55,6 +55,7 @@ li {
 
 #title {
     margin: 15px 0;
+    padding-bottom: 15px;
 }
 
 #quiz-answers {
@@ -96,4 +97,11 @@ body:not(.user-is-tabbing) textarea:focus {
         max-width: 800px;
     }
   }
+
+@media screen and (max-width: 470px) {
+    #initials {
+        display: block;
+        margin: 15px 0;
+    }
+}
 
