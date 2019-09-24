@@ -24,11 +24,11 @@ console.log(questions);
 
 // starts game
 function startQuiz() {
-    // starts timer
+    // sets timer start at 75 seconds
     timerSecs = 75;
     timerDisplay.textContent = timerSecs;
 
-    // start countdown
+    // starts countdown
     countdown();
 
     // starts question page
@@ -57,7 +57,7 @@ function nextQuestion() {
 
     // takes the answer options from the current index in the questions array
     // and assigns them one by one to each of the answer buttonsj
-    // could be made into a for loop?
+    // could be made into a for loop if there were more questions
     answerButtons[0].textContent = questions[currentQuestion].choices[0];
     answerButtons[1].textContent = questions[currentQuestion].choices[1];
     answerButtons[2].textContent = questions[currentQuestion].choices[2];

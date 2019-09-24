@@ -25,7 +25,7 @@ button:hover {
 
 #container {
     overflow: auto;
-    max-width: 80%;
+    max-width: 90%;
     display: block;
     margin: auto;
 }
