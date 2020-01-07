@@ -202,7 +202,7 @@ function seeHighScores() {
     };
 
     // creates new list and button elements and appends them to container
-    container.className = 'score-page mt-5 card';
+    container.className = 'score-page mt-5 card bg-light p-4';
     let ul = document.createElement('ul');
     let returnButton = document.createElement('button');
     let clearButton = document.createElement('button');
