@@ -61,9 +61,6 @@ function nextQuestion() {
     for (i = 0; i < answerButtons.length; i++) {
         answerButtons[i].addEventListener('click', checkAnswer);
     }
-    
-    // checking that currentQuestion has increased one after pressing answer button
-    console.log(currentQuestion);
 }
 
 // checks whether chosen answer matches answer
