@@ -92,7 +92,7 @@ function checkAnswer(event) {
         }, 800);
 
         // end game if current question is 5
-        if (currentQuestion === 5) {
+        if (currentQuestion === questions.length) {
             endGame();
 
         // else go to next question
