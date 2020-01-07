@@ -19,9 +19,6 @@ let score = 0;
 let scoreArray = [];
 let timerInterval = false;
 
-// confirming that questions are being referenced
-console.log(questions);
-
 // starts game
 function startQuiz() {
     // sets timer start at 75 seconds
@@ -40,9 +37,6 @@ function startQuiz() {
 
 // changes display to next question
 function nextQuestion() {
-
-    // checks what current score is
-    console.log('Current score: ' + score);
 
     // changes appearance of page
     container.className = 'results-page mt-5'
