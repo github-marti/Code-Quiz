@@ -25,7 +25,7 @@ console.log(questions);
 // starts game
 function startQuiz() {
     // sets timer start at 75 seconds
-    timerSecs = 75;
+    timerSecs = 40;
     timerDisplay.textContent = timerSecs;
 
     // starts countdown
